@@ -1,12 +1,10 @@
 package com.company;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
-import java.io.File;
-import java.io.IOException;  // IOException class handles errors
+
 public class PersistentArrayList {
-    public static void listSetup(String[] data, String fileName, boolean append){
-        ArrayList<String> list = new ArrayList<String>();
+    public static void listSetup(String[] data, String fileName, boolean append, ArrayList<String> list){
+
         for(int i = 0; i < data.length; i++){
             list.add(data[i]);
         }
@@ -38,8 +36,77 @@ public class PersistentArrayList {
         return("");
     }
 
-    public static int getIndex(int indexInput){
-        String output = 
+    public static String getIndex(int indexInput, ArrayList<String> list){
+        String output = list.get(indexInput);
+        return(output);
+    }
+
+    public static void add(String newInput, boolean append, String fileName){
+        try (
+                FileWriter fw = new FileWriter(fileName, append);
+                PrintWriter pw = new PrintWriter(fw)
+        ) {
+            pw.println(newInput);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void clearData(boolean append, String fileName){
+        try {
+            FileWriter fw = new FileWriter(fileName, append);
+            PrintWriter pw = new PrintWriter(fw);
+            FileReader fr = new FileReader("output.txt");
+            BufferedReader br = new BufferedReader(fr);
+            String line = br.readLine();
+
+            while (line != null)
+                pw.println("");
+                line = br.readLine();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int getSizeOfFile(String fileName){
+        try {
+            int count = 0;
+            FileReader fr = new FileReader("output.txt");
+            BufferedReader br = new BufferedReader(fr);
+            String line = br.readLine();
+            while (line != null) {
+                count++;
+                line = br.readLine();
+            }
+            return(count);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return(0);
+    }
+
+    public static void contains(String elementToFind){
+        try {
+
+            FileReader fr = new FileReader("output.txt");
+            BufferedReader br = new BufferedReader(fr);
+            String line = br.readLine();
+            while (line != null) {
+                if (line.equals (elementToFind)){
+                    System.out.println("found");
+                }
+                line = br.readLine();
+
+            }
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
